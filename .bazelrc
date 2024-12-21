@@ -1,5 +1,8 @@
 # .bazelrc
 
+# Keep workspace support for now
+build --enable_workspace
+
 # Set the default C++ standard to C++17
 build --cxxopt="-std=c++17"
 
@@ -19,7 +22,7 @@ build --jobs=4
 build --verbose_failures
 
 # Cache settings (optional)
-build --disk_cache=/path/to/cache
+# build --disk_cache=/path/to/cache
 
 # Remote cache settings (optional)
 # build --remote_cache=http://remote-cache-server:port

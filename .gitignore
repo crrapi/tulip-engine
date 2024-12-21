@@ -1,3 +1,60 @@
+# Compiled Object files
+*.o
+*.obj
+*.lo
+*.la
+*.al
+*.libs
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.dll
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.pdb
+*.idb
+*.ipdb
+*.pgc
+*.pgd
+
+# Build directories
+/build/
+/bazel-*
+/bazel-out/
+*.bazelrc.user
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# Dependency directories
+/third_party/*
+
+# Editor and OS specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.idea/
+.vscode/
+*.iml
+
 # Prerequisites
 *.d
 
