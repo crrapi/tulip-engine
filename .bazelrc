@@ -1,28 +1,9 @@
-# .bazelrc
+# Bazel configuration for Tulip Engine
 
-# Keep workspace support for now
-build --enable_workspace
+# Enable WORKSPACE mode explicitly
+common --enable_workspace
 
-# Set the default C++ standard to C++17
-build --cxxopt="-std=c++17"
-
-# Optimize for speed during development
-build --compilation_mode=dbg
-
-# Enable warnings as errors
-build --cxxopt="-Werror"
-
-# Use multi-threaded builds
-build --jobs=4
-
-# Specify default platforms if needed
-# build --platforms=@platforms//:default_platform
-
-# Enable more verbose output for debugging
-build --verbose_failures
-
-# Cache settings (optional)
-# build --disk_cache=/path/to/cache
-
-# Remote cache settings (optional)
-# build --remote_cache=http://remote-cache-server:port
+# macOS-specific settings - use system SDK
+build --cxxopt=-isysroot/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+build --conlyopt=-isysroot/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+build --linkopt=-isysroot/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk

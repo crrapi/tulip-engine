@@ -18,6 +18,7 @@ namespace Renderer
     private:
         unsigned int VAO, VBO, EBO;
         bool mLoaded;
+        int mIndexCount;
     };
 
 } // namespace Renderer

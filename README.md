@@ -1,17 +1,17 @@
 
 # Tulip
 
-**Tulip** is a comprehensive C++ game engine designed for high performance and modularity. It integrates various subsystems such as rendering, audio, physics, input handling, scripting, AI, networking, and tools, all managed under the Bazel build system.
+**Tulip** is a small, modular C++ game engine built with Bazel. This branch focuses on a minimal, working workflow: SDL2 windowing/input and OpenGL rendering (a sample triangle), with ECS and core utilities.
 
 ## Table of Contents
 
 1. [Features](#features)
 2. [Directory Structure](#directory-structure)
 3. [Prerequisites](#prerequisites)
-4. [Setup and Installation](#setup-and-installation)
-5. [Building the Project](#building-the-project)
-6. [Running Tulip](#running-tulip)
-7. [Third-Party Libraries](#third-party-libraries)
+4. [Quick Start (macOS)](#quick-start-macos)
+5. [Building](#building)
+6. [Running](#running)
+7. [Notes](#notes)
 8. [Contributing](#contributing)
 9. [License](#license)
 
@@ -30,62 +30,40 @@
 
 ## Prerequisites
 
-- **Bazel:** Ensure Bazel is installed on your system. Follow the [official installation guide](https://bazel.build/install) for your operating system.
-- **C++ Compiler:** A modern C++ compiler supporting C++17 or later (e.g., GCC, Clang, MSVC).
-- **Third-Party Libraries:** Tulip uses several third-party libraries which should be placed in the `third_party/` directory.
+- **Bazel:** Install via the [official guide](https://bazel.build/install).
+- **C++ Compiler:** C++17-capable (Clang on macOS).
+- **SDL2:** Use Homebrew on macOS: `brew install sdl2`.
 
-## Setup and Installation
+## Quick Start (macOS)
 
-1. **Clone the Repository:**
+```bash
+git clone https://github.com/crrapi/tulip-engine.git
+cd tulip-engine
+# Ensure SDL2 is installed
+brew install sdl2
 
-   ```bash
-   git clone https://github.com/crrapi/tulip-engine.git
-   cd tulip
-   ```
+# Build and run
+bazel run //src/main:game_app
+```
 
-2. **Add Third-Party Libraries:**
-
-   Download and place the required third-party libraries into the `third_party/` directory:
-
-   - **SDL2:** [https://www.libsdl.org/](https://www.libsdl.org/)
-   - **Bullet Physics:** [https://pybullet.org/wordpress/](https://pybullet.org/wordpress/)
-   - **FMOD:** [https://www.fmod.com/](https://www.fmod.com/)
-   - **ENet:** [http://enet.bespin.org/](http://enet.bespin.org/)
-   - **Lua:** [https://www.lua.org/](https://www.lua.org/)
-
-   Ensure each library has its corresponding `BUILD` file within its directory or is referenced correctly in the top-level `third_party/BUILD`.
-
-## Building the Project
-
-From the root directory of the project, execute the following command to build **Tulip**:
+## Building
 
 ```bash
 bazel build //src/main:game_app
 ```
 
-This command compiles all necessary components and generates the executable.
-
-## Running Tulip
-
-After a successful build, run the game application using:
+## Running
 
 ```bash
 bazel run //src/main:game_app
 ```
 
-This will launch the Tulip Engine, initializing all subsystems and opening the main game window.
+You should see an SDL2 window rendering a colored triangle. Press `Esc` or close the window to quit.
 
-## Third-Party Libraries
+## Notes
 
-**Tulip** leverages several third-party libraries to provide rich functionality:
-
-- **SDL2:** Handles window creation, input, and OpenGL context management.
-- **Bullet Physics:** Provides physics simulation capabilities.
-- **FMOD:** Manages audio playback and audio-related features.
-- **ENet:** Facilitates reliable networking for client-server communication.
-- **Lua:** Enables scripting support for dynamic game behavior.
-
-Ensure that all dependencies are correctly integrated and referenced in the Bazel build configurations.
+- This configuration removes heavy optional subsystems (audio, physics, networking, scripting, editor) to keep the sample runnable. They can be reintroduced later.
+- On macOS we link `OpenGL.framework`; on Linux we link `-lGL`. Adjust as needed for your platform.
 
 ## Contributing
 

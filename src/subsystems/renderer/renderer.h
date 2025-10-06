@@ -16,6 +16,8 @@ namespace Renderer
 
     private:
         bool mInitialized;
+        bool mSampleSetupDone;
+        float mRotation;
     };
 
     // Global accessor

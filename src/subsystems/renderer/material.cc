@@ -28,6 +28,19 @@ namespace Renderer
         return true;
     }
 
+    bool Material::LoadFromSource(const std::string &vertexSource, const std::string &fragmentSource)
+    {
+        mShader = std::make_shared<Shader>();
+        if (!mShader->LoadFromSource(vertexSource, fragmentSource))
+        {
+            Core::Logging::Log("[Material] Failed to load shader from source.", Core::LogLevel::ERROR);
+            return false;
+        }
+        mLoaded = true;
+        Core::Logging::Log("[Material] Material loaded successfully from source.");
+        return true;
+    }
+
     void Material::Apply() const
     {
         if (!mLoaded || !mShader)
@@ -36,6 +49,14 @@ namespace Renderer
             return;
         }
         mShader->Use();
+    }
+
+    void Material::SetFloat(const std::string &name, float value) const
+    {
+        if (mLoaded && mShader)
+        {
+            mShader->SetFloat(name, value);
+        }
     }
 
 } // namespace Renderer

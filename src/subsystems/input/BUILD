@@ -9,9 +9,8 @@ cc_library(
     hdrs = [
         "input.h",
     ],
-    linkopts = ["-lSDL2"],
     deps = [
         "//src/core",
-        "@SDL2//:sdl2",
+        "@homebrew_sdl2//:sdl2",
     ],
 )

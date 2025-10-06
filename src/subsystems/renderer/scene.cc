@@ -23,12 +23,29 @@ namespace Renderer
         Core::Logging::Log("[Scene] Material added to scene.");
     }
 
+    void Scene::SetDefaultMaterial(const std::shared_ptr<Material> &material)
+    {
+        mDefaultMaterial = material;
+        Core::Logging::Log("[Scene] Default material set.");
+    }
+
     void Scene::Render()
     {
-        Core::Logging::Log("[Scene] Rendering Scene with " + std::to_string(mMeshes.size()) + " meshes.");
+        if (mDefaultMaterial)
+        {
+            mDefaultMaterial->Apply();
+        }
         for (const auto &mesh : mMeshes)
         {
             mesh->Draw();
+        }
+    }
+
+    void Scene::SetMaterialFloat(const std::string &name, float value)
+    {
+        if (mDefaultMaterial)
+        {
+            mDefaultMaterial->SetFloat(name, value);
         }
     }
 

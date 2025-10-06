@@ -1,6 +1,7 @@
 // src/main/main.cc
 #include "src/engine/engine.h"
 #include "src/core/logging.h"
+#include "src/subsystems/input/input.h"
 
 int main(int argc, char **argv)
 {

@@ -17,11 +17,13 @@ cc_library(
         "scene.h",
         "shader.h",
     ],
-    linkopts = ["-lGL"],  # Adjust based on platform
+    linkopts = [
+        "-framework", "OpenGL",
+    ],
     deps = [
         "//src/core",
         "//src/math",
-        "@SDL2//:sdl2",  # For OpenGL context via SDL2
-        "@glad//:glad_lib",  # Assuming you're using GLAD for OpenGL loading
+        "//src/platform",
+        "@homebrew_sdl2//:sdl2",
     ],
 )

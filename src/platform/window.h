@@ -9,6 +9,7 @@ namespace Platform
     public:
         static void Create(const char *title, int width, int height);
         static void Destroy();
+        static void SwapBuffers();
     };
 
 } // namespace Platform

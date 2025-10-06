@@ -2,7 +2,11 @@
 #include "window.h"
 #include "src/core/logging.h"
 #include <SDL.h>
-#include <glad/glad.h> // Or your chosen OpenGL loader
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#else
+#include <GL/gl.h>
+#endif
 
 namespace Platform
 {
@@ -12,9 +16,9 @@ namespace Platform
 
     void Window::Create(const char *title, int width, int height)
     {
-        // Set OpenGL version (e.g., 3.3 Core)
+        // Set OpenGL version (3.2 Core for broad macOS compatibility)
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
         // Create the window with OpenGL context
@@ -37,19 +41,18 @@ namespace Platform
             return;
         }
 
-        // Initialize OpenGL loader here if necessary (e.g., GLAD, GLEW)
-        // Example with GLAD:
-        /*
-        if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-            Core::Logging::Log("[Window] Failed to initialize GLAD.", Core::LogLevel::ERROR);
-            return;
-        }
-        */
-
         // Set viewport
         glViewport(0, 0, width, height);
 
         Core::Logging::Log("[Window] Window and OpenGL context created successfully.");
+    }
+
+    void Window::SwapBuffers()
+    {
+        if (gWindow)
+        {
+            SDL_GL_SwapWindow(gWindow);
+        }
     }
 
     void Window::Destroy()

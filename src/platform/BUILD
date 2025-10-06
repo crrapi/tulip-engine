@@ -12,11 +12,10 @@ cc_library(
         "window.h",
     ],
     linkopts = [
-        "-lSDL2",
-        "-lGL",
+        "-framework", "OpenGL",
     ],
     deps = [
         "//src/core",
-        "@SDL2//:sdl2",
+        "@homebrew_sdl2//:sdl2",
     ],
 )

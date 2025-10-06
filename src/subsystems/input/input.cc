@@ -45,8 +45,6 @@ namespace Input
             }
             // Handle more input events as needed
         }
-
-        Core::Logging::Log("[Input] Input System updated.");
     }
 
     void InputSystem::Shutdown()

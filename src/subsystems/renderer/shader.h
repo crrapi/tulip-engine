@@ -12,7 +12,9 @@ namespace Renderer
         ~Shader();
 
         bool Load(const std::string &vertexPath, const std::string &fragmentPath);
+        bool LoadFromSource(const std::string &vertexSource, const std::string &fragmentSource);
         void Use() const;
+        void SetFloat(const std::string &name, float value) const;
 
     private:
         unsigned int ID;

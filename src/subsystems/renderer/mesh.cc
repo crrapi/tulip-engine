@@ -1,13 +1,17 @@
 // src/subsystems/renderer/mesh.cc
 #include "mesh.h"
 #include "src/core/logging.h"
-#include <glad/glad.h>
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#else
+#include <GL/gl.h>
+#endif
 
 namespace Renderer
 {
 
     Mesh::Mesh()
-        : VAO(0), VBO(0), EBO(0), mLoaded(false)
+        : VAO(0), VBO(0), EBO(0), mLoaded(false), mIndexCount(0)
     {
     }
 
@@ -37,13 +41,15 @@ namespace Renderer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-        // Vertex attributes (assuming position only for simplicity)
+        // Vertex attributes - position at location 0
+        // Note: Without layout(location) in shader, we bind by name later
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
 
         glBindVertexArray(0);
 
         mLoaded = true;
+        mIndexCount = static_cast<int>(indices.size());
         Core::Logging::Log("[Mesh] Mesh loaded successfully.");
         return true;
     }
@@ -56,7 +62,7 @@ namespace Renderer
             return;
         }
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, /*count=*/6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, mIndexCount, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 

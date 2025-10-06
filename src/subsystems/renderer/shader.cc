@@ -1,7 +1,11 @@
 // src/subsystems/renderer/shader.cc
 #include "shader.h"
 #include "src/core/logging.h"
-#include <glad/glad.h>
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#else
+#include <GL/gl.h>
+#endif
 #include <fstream>
 #include <sstream>
 
@@ -62,14 +66,19 @@ namespace Renderer
         {
             return false;
         }
+        return LoadFromSource(vertexCode, fragmentCode);
+    }
 
+    bool Shader::LoadFromSource(const std::string &vertexSource, const std::string &fragmentSource)
+    {
         unsigned int vertexShader, fragmentShader;
-        if (!CompileShader(vertexCode.c_str(), GL_VERTEX_SHADER, vertexShader))
+        if (!CompileShader(vertexSource.c_str(), GL_VERTEX_SHADER, vertexShader))
         {
             return false;
         }
-        if (!CompileShader(fragmentCode.c_str(), GL_FRAGMENT_SHADER, fragmentShader))
+        if (!CompileShader(fragmentSource.c_str(), GL_FRAGMENT_SHADER, fragmentShader))
         {
+            glDeleteShader(vertexShader);
             return false;
         }
 
@@ -77,6 +86,10 @@ namespace Renderer
         ID = glCreateProgram();
         glAttachShader(ID, vertexShader);
         glAttachShader(ID, fragmentShader);
+
+        // Bind attribute location before linking (for compatibility with GLSL 150)
+        glBindAttribLocation(ID, 0, "aPos");
+
         glLinkProgram(ID);
 
         // Check linking
@@ -87,6 +100,8 @@ namespace Renderer
             char infoLog[512];
             glGetProgramInfoLog(ID, 512, nullptr, infoLog);
             Core::Logging::Log("[Shader] Shader program linking failed: " + std::string(infoLog), Core::LogLevel::ERROR);
+            glDeleteShader(vertexShader);
+            glDeleteShader(fragmentShader);
             return false;
         }
 
@@ -107,6 +122,19 @@ namespace Renderer
             return;
         }
         glUseProgram(ID);
+    }
+
+    void Shader::SetFloat(const std::string &name, float value) const
+    {
+        if (!mLoaded)
+        {
+            return;
+        }
+        int location = glGetUniformLocation(ID, name.c_str());
+        if (location != -1)
+        {
+            glUniform1f(location, value);
+        }
     }
 
 } // namespace Renderer
