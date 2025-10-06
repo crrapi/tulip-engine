@@ -12,6 +12,8 @@ namespace Core
         static void Tick(float deltaTime);
         static float GetDeltaTime();
         static float GetTimeSinceStart();
+        static float GetFPS();
+        static int GetFrameCount();
 
     private:
         static float sDeltaTime;

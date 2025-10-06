@@ -18,6 +18,12 @@ namespace Renderer
         bool mInitialized;
         bool mSampleSetupDone;
         float mRotation;
+        unsigned int mDebugVAO;
+        unsigned int mDebugVBO;
+        unsigned int mDebugShaderID;
+
+        void SetupDebugOverlay();
+        void RenderDebugOverlay();
     };
 
     // Global accessor
