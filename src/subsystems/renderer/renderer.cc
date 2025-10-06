@@ -198,86 +198,158 @@ void main(){
         glDisable(GL_DEPTH_TEST);
         glUseProgram(mDebugShaderID);
         glBindVertexArray(mDebugVAO);
-        
+
         float fps = Core::Time::GetFPS();
         float fpsNormalized = std::min(fps / 120.0f, 1.0f); // Normalize to 0-1 range (max 120 FPS display)
-        
+
         // Create vertices for FPS bar and background
         std::vector<float> debugVerts;
-        
+
         // Background panel (dark semi-transparent)
         float panelW = 0.4f;
         float panelH = 0.15f;
         float panelX = -0.95f;
         float panelY = 0.85f;
-        
+
         // Panel background vertices (pos.xy + color.rgb)
         debugVerts.insert(debugVerts.end(), {
-            panelX, panelY, 0.1f, 0.1f, 0.15f,
-            panelX + panelW, panelY, 0.1f, 0.1f, 0.15f,
-            panelX + panelW, panelY + panelH, 0.1f, 0.1f, 0.15f,
-            
-            panelX, panelY, 0.1f, 0.1f, 0.15f,
-            panelX + panelW, panelY + panelH, 0.1f, 0.1f, 0.15f,
-            panelX, panelY + panelH, 0.1f, 0.1f, 0.15f,
-        });
-        
+                                                panelX,
+                                                panelY,
+                                                0.1f,
+                                                0.1f,
+                                                0.15f,
+                                                panelX + panelW,
+                                                panelY,
+                                                0.1f,
+                                                0.1f,
+                                                0.15f,
+                                                panelX + panelW,
+                                                panelY + panelH,
+                                                0.1f,
+                                                0.1f,
+                                                0.15f,
+
+                                                panelX,
+                                                panelY,
+                                                0.1f,
+                                                0.1f,
+                                                0.15f,
+                                                panelX + panelW,
+                                                panelY + panelH,
+                                                0.1f,
+                                                0.1f,
+                                                0.15f,
+                                                panelX,
+                                                panelY + panelH,
+                                                0.1f,
+                                                0.1f,
+                                                0.15f,
+                                            });
+
         // FPS bar (green to red based on performance)
         float barX = panelX + 0.02f;
         float barY = panelY + 0.02f;
         float barW = (panelW - 0.04f) * fpsNormalized;
         float barH = 0.04f;
-        
+
         float r = 1.0f - fpsNormalized;
         float g = fpsNormalized;
-        
+
         debugVerts.insert(debugVerts.end(), {
-            barX, barY, r, g, 0.2f,
-            barX + barW, barY, r, g, 0.2f,
-            barX + barW, barY + barH, r, g, 0.2f,
-            
-            barX, barY, r, g, 0.2f,
-            barX + barW, barY + barH, r, g, 0.2f,
-            barX, barY + barH, r, g, 0.2f,
-        });
-        
+                                                barX,
+                                                barY,
+                                                r,
+                                                g,
+                                                0.2f,
+                                                barX + barW,
+                                                barY,
+                                                r,
+                                                g,
+                                                0.2f,
+                                                barX + barW,
+                                                barY + barH,
+                                                r,
+                                                g,
+                                                0.2f,
+
+                                                barX,
+                                                barY,
+                                                r,
+                                                g,
+                                                0.2f,
+                                                barX + barW,
+                                                barY + barH,
+                                                r,
+                                                g,
+                                                0.2f,
+                                                barX,
+                                                barY + barH,
+                                                r,
+                                                g,
+                                                0.2f,
+                                            });
+
         // Frame count indicator (smaller bar)
         int frames = Core::Time::GetFrameCount();
         float frameBarY = barY + 0.05f;
         float frameBarW = (panelW - 0.04f) * (std::fmod(frames, 60) / 60.0f);
-        
+
         debugVerts.insert(debugVerts.end(), {
-            barX, frameBarY, 0.2f, 0.8f, 1.0f,
-            barX + frameBarW, frameBarY, 0.2f, 0.8f, 1.0f,
-            barX + frameBarW, frameBarY + barH, 0.2f, 0.8f, 1.0f,
-            
-            barX, frameBarY, 0.2f, 0.8f, 1.0f,
-            barX + frameBarW, frameBarY + barH, 0.2f, 0.8f, 1.0f,
-            barX, frameBarY + barH, 0.2f, 0.8f, 1.0f,
-        });
-        
+                                                barX,
+                                                frameBarY,
+                                                0.2f,
+                                                0.8f,
+                                                1.0f,
+                                                barX + frameBarW,
+                                                frameBarY,
+                                                0.2f,
+                                                0.8f,
+                                                1.0f,
+                                                barX + frameBarW,
+                                                frameBarY + barH,
+                                                0.2f,
+                                                0.8f,
+                                                1.0f,
+
+                                                barX,
+                                                frameBarY,
+                                                0.2f,
+                                                0.8f,
+                                                1.0f,
+                                                barX + frameBarW,
+                                                frameBarY + barH,
+                                                0.2f,
+                                                0.8f,
+                                                1.0f,
+                                                barX,
+                                                frameBarY + barH,
+                                                0.2f,
+                                                0.8f,
+                                                1.0f,
+                                            });
+
         glBindBuffer(GL_ARRAY_BUFFER, mDebugVBO);
         glBufferData(GL_ARRAY_BUFFER, debugVerts.size() * sizeof(float), debugVerts.data(), GL_DYNAMIC_DRAW);
-        
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
         glEnableVertexAttribArray(1);
-        
+
         glDrawArrays(GL_TRIANGLES, 0, static_cast<int>(debugVerts.size() / 5));
-        
+
         glBindVertexArray(0);
         glEnable(GL_DEPTH_TEST);
-        
+
         // Also log to console every second
         static float debugTimer = 0.0f;
         debugTimer += Core::Time::GetDeltaTime();
-        
+
         if (debugTimer >= 1.0f)
         {
-            Core::Logging::Log("[DEBUG] FPS: " + std::to_string(static_cast<int>(fps)) + 
-                             " | Frames: " + std::to_string(frames) + 
-                             " | Time: " + std::to_string(static_cast<int>(Core::Time::GetTimeSinceStart())) + "s");
+            Core::Logging::Log("[DEBUG] FPS: " + std::to_string(static_cast<int>(fps)) +
+                               " | Frames: " + std::to_string(frames) +
+                               " | Time: " + std::to_string(static_cast<int>(Core::Time::GetTimeSinceStart())) + "s");
             debugTimer = 0.0f;
         }
     }
@@ -285,7 +357,7 @@ void main(){
     void RendererSystem::Shutdown()
     {
         Core::Logging::Log("[Renderer] Shutting down Renderer System...");
-        
+
         if (mDebugVAO)
         {
             glDeleteVertexArrays(1, &mDebugVAO);
@@ -301,7 +373,7 @@ void main(){
             glDeleteProgram(mDebugShaderID);
             mDebugShaderID = 0;
         }
-        
+
         mInitialized = false;
     }
 
